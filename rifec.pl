@@ -1060,6 +1060,11 @@ package RIFEC::File {
 	    unless $outfile eq $full_filename;
 
 	$self->stored_file($outfile); # Remember where we put it
+	
+	if (-e "/usr/bin/jhead" ) { # if jhead binary is existing, we use it to timestamp the image
+		$log->info( "Applying exif time to %s with jhead." );
+		my @sysargs= ("/usr/bin/jhead", "-q", "-ft", $self->_file() );
+	}
 
 	$log->debug("Removing tar file '%s'", $self->tarfile());
         unlink $self->tarfile
